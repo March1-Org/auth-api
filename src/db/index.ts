@@ -10,8 +10,10 @@ export async function getDb() {
     user: config.POSTGRES_USER,
     password: config.POSTGRES_PASSWORD,
   });
+
   await client.connect();
 
   return drizzle(client);
 }
+
 export type DbType = Awaited<ReturnType<typeof getDb>>;

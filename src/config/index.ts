@@ -21,6 +21,9 @@ interface Config {
   REDIS_HOST: string;
   REDIS_PASSWORD: string;
   REDIS_DB: number;
+  TWILIO_ACCOUNT_SID: string;
+  TWILIO_SERVICE_SID: string;
+  TWILIO_AUTH_TOKEN: string;
 }
 
 // Export the configuration
@@ -38,4 +41,7 @@ export const config: Config = {
   REDIS_HOST: process.env.REDIS_HOST || '127.0.0.1',
   REDIS_PASSWORD: process.env.REDIS_PASSWORD || 'cache_password',
   REDIS_DB: parseInt(process.env.REDIS_DB || '0'),
+  TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID!,
+  TWILIO_SERVICE_SID: process.env.TWILIO_SERVICE_SID!,
+  TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN!,
 };
