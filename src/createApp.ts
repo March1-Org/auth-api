@@ -1,11 +1,12 @@
 import jwt from '@elysiajs/jwt';
+import { auth } from 'auth';
 import { config } from 'config';
 import type { DbType } from 'db';
 import type { Schema, SchemaBodies } from 'db/schema';
 import Elysia from 'elysia';
 import { checkAuthorization } from 'handlers/checkAuthorization';
 import type Redis from 'ioredis';
-import { userRoutes } from 'routes/usersRoutes';
+import { authRoutes } from 'routes/authRoutes';
 
 type Options = {
   db: DbType;
@@ -26,5 +27,5 @@ export function createApp({ db, schemaBodies, schema, cache }: Options) {
       })
     )
     .onBeforeHandle((options) => checkAuthorization(options))
-    .use(userRoutes({ cache, db, schema, schemaBodies }));
+    .use(authRoutes({ auth, cache, db, schema, schemaBodies }));
 }

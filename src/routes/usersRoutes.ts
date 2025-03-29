@@ -1,11 +1,8 @@
 import type { DbType } from 'db';
 import type { Schema, SchemaBodies } from 'db/schema';
-import Elysia, { t } from 'elysia';
-import { deleteUser } from 'handlers/users/deleteUser';
-import { insertUser } from 'handlers/users/insertUser';
+import Elysia from 'elysia';
 import { selectUser } from 'handlers/users/selectUser';
 import { selectUsers, selectUsersQuery } from 'handlers/users/selectUsers';
-import { updateUser } from 'handlers/users/updateUser';
 import type Redis from 'ioredis';
 
 type Options = {
@@ -27,12 +24,12 @@ export async function userRoutes({ db, schemaBodies, schema, cache }: Options) {
         summary: 'Selects users in a page',
       },
     })
-    .get('/:id', (options) => selectUser(options))
-    .post('', (options) => insertUser(options), {
-      body: t.Object(schemaBodies.insert.usersTable),
-    })
-    .patch('/:id', (options) => updateUser(options), {
-      body: t.Object(schemaBodies.update.usersTable),
-    })
-    .delete('/:id', (options) => deleteUser(options));
+    .get('/:id', (options) => selectUser(options));
+  // .post('', (options) => insertUser(options), {
+  //   body: t.Object(schemaBodies.insert.users),
+  // })
+  // .patch('/:id', (options) => updateUser(options), {
+  //   body: t.Object(schemaBodies.update.users),
+  // })
+  // .delete('/:id', (options) => deleteUser(options));
 }
