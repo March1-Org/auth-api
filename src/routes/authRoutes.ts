@@ -1,28 +1,26 @@
-import type { auth } from 'auth';
-import type { DbType } from 'db';
-import type { Schema, SchemaBodies } from 'db/schema';
+import jwt from '@elysiajs/jwt';
+import { Auth } from 'auth';
+import { config } from 'config';
 import Elysia from 'elysia';
-import type Redis from 'ioredis';
+import { sendOTP, sendOTPBody } from 'handlers/auth/sendOTP';
+import { verifyOTP, verifyOTPBody } from 'handlers/auth/verifyOTP';
 
 type Options = {
-  auth: typeof auth;
-  db: DbType;
-  schemaBodies: SchemaBodies;
-  schema: Schema;
-  cache: Redis;
+  auth: Auth;
 };
 
-export async function authRoutes({
-  auth,
-  db,
-  schemaBodies,
-  schema,
-  cache,
-}: Options) {
+export async function authRoutes({ auth }: Options) {
   return new Elysia({ prefix: '/auth' })
     .decorate('auth', auth)
-    .decorate('db', db)
-    .decorate('schemaBodies', schemaBodies)
-    .decorate('schema', schema)
-    .decorate('cache', cache);
+    .use(
+      jwt({
+        secret: config.JWT_SECRET!,
+      })
+    )
+    .post('/sendOTP', (config) => sendOTP(config), {
+      body: sendOTPBody,
+    })
+    .post('/verfiyOTP', (config) => verifyOTP(config), {
+      body: verifyOTPBody,
+    });
 }

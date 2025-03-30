@@ -12,9 +12,9 @@ type Options = {
   cache: Redis;
 };
 
-export async function selectUser({
+export async function getUser({
   db,
-  schema: { usersTable },
+  schema: { users },
   params: { id },
   cache,
 }: Options) {
@@ -26,10 +26,7 @@ export async function selectUser({
     return JSON.parse(cachedUser) as UserRow;
   }
 
-  const data = await db
-    .select()
-    .from(usersTable)
-    .where(eq(usersTable.id, Number(id)));
+  const data = await db.select().from(users).where(eq(users.id, id));
 
   if (!data.length) {
     return error('Not Found', 'User not found.');

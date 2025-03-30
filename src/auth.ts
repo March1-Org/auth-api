@@ -7,7 +7,7 @@ import { getTempEmail, getTempName } from 'utils/auth/temp';
 import { twilioSendOTP } from 'utils/auth/twilio';
 import { validatePhoneNumber } from 'utils/auth/validate';
 
-export const auth = betterAuth({
+export const authInstance = betterAuth({
   database: drizzleAdapter(await getDb(), {
     provider: 'pg',
     schema,
@@ -23,3 +23,26 @@ export const auth = betterAuth({
     }),
   ],
 });
+
+export class Auth {
+  constructor(
+    private authApi: typeof authInstance.api,
+    private phoneValidator = validatePhoneNumber
+  ) {}
+
+  public sendPhoneNumberOTP(
+    ...args: Parameters<typeof authInstance.api.sendPhoneNumberOTP>
+  ) {
+    return this.authApi.sendPhoneNumberOTP(...args);
+  }
+
+  public verifyPhoneNumber(
+    ...args: Parameters<typeof authInstance.api.verifyPhoneNumber>
+  ) {
+    return this.authApi.verifyPhoneNumber(...args);
+  }
+
+  public validatePhoneNumber(...args: Parameters<typeof validatePhoneNumber>) {
+    return this.phoneValidator(...args);
+  }
+}

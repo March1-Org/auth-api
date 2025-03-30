@@ -1,7 +1,7 @@
 import type { DbType } from 'db';
 import type { Schema, SchemaBodies } from 'db/schema';
 import Elysia from 'elysia';
-import { selectUser } from 'handlers/users/selectUser';
+import { getUser } from 'handlers/users/getUser';
 import { selectUsers, selectUsersQuery } from 'handlers/users/selectUsers';
 import type Redis from 'ioredis';
 
@@ -24,7 +24,7 @@ export async function userRoutes({ db, schemaBodies, schema, cache }: Options) {
         summary: 'Selects users in a page',
       },
     })
-    .get('/:id', (options) => selectUser(options));
+    .get('/:id', (options) => getUser(options));
   // .post('', (options) => insertUser(options), {
   //   body: t.Object(schemaBodies.insert.users),
   // })
