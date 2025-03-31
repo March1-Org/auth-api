@@ -17,16 +17,16 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "POSTGRES_USER=db_user" > .env
-          echo "POSTGRES_PASSWORD=db_password" >> .env
-          echo "POSTGRES_DB=db" >> .env
-          echo "POSTGRES_PORT=5432" >> .env
-          echo "REDIS_URL=127.0.0.1" >> .env
-          echo "REDIS_PORT=6379" >> .env
-          echo "REDIS_HOST=127.0.0.1" >> .env
-          echo "REDIS_PASSWORD=cache_password" >> .env
-          echo "REDIS_DATABASE=0" >> .env
-          echo "JWT_SECRET=jwt-secret" >> .env
+          echo "POSTGRES_USER=db_user" > .env.testing
+          echo "POSTGRES_PASSWORD=db_password" >> .env.testing
+          echo "POSTGRES_DB=db" >> .env.testing
+          echo "POSTGRES_PORT=5432" >> .env.testing
+          echo "REDIS_URL=127.0.0.1" >> .env.testing
+          echo "REDIS_PORT=6379" >> .env.testing
+          echo "REDIS_HOST=127.0.0.1" >> .env.testing
+          echo "REDIS_PASSWORD=cache_password" >> .env.testing
+          echo "REDIS_DATABASE=0" >> .env.testing
+          echo "JWT_SECRET=jwt-secret" >> .env.testing
 
       - name: Make setup.sh and teardown.sh executable
         run: chmod +x ./test/setup.sh && chmod +x ./test/teardown.sh
