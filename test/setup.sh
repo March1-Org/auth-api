@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Load environment variables
-if [ -f .env ]; then
-  source .env
+if [ -f .env.testing ]; then
+  source .env.testing
 else
-  echo "Error: .env file not found."
+  echo "Error: .env.testing file not found."
   exit 1
 fi
 

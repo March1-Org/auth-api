@@ -1,6 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { phoneNumber } from 'better-auth/plugins';
+import { phoneNumber, type UserWithPhoneNumber } from 'better-auth/plugins';
 import { getDb } from 'db';
 import { schema } from 'db/schema';
 import { getTempEmail, getTempName } from 'utils/auth/temp';
@@ -24,21 +24,45 @@ export const authInstance = betterAuth({
   ],
 });
 
+type VerifyPhoneNumberRes =
+  | {
+      status: boolean;
+      token: string;
+      user: UserWithPhoneNumber;
+    }
+  | {
+      status: boolean;
+      token: null;
+      user: UserWithPhoneNumber;
+    }
+  | null;
+
+type AuthApi = {
+  sendPhoneNumberOTP: ({
+    body: { phoneNumber },
+  }: {
+    body: { phoneNumber: string };
+  }) => Promise<{ code: string }>;
+  verifyPhoneNumber: ({
+    body: { phoneNumber, code },
+  }: {
+    body: { phoneNumber: string; code: string };
+  }) => Promise<VerifyPhoneNumberRes>;
+};
+
 export class Auth {
   constructor(
-    private authApi: typeof authInstance.api,
+    private authApi: AuthApi,
     private phoneValidator = validatePhoneNumber
   ) {}
 
   public sendPhoneNumberOTP(
-    ...args: Parameters<typeof authInstance.api.sendPhoneNumberOTP>
+    ...args: Parameters<AuthApi['sendPhoneNumberOTP']>
   ) {
     return this.authApi.sendPhoneNumberOTP(...args);
   }
 
-  public verifyPhoneNumber(
-    ...args: Parameters<typeof authInstance.api.verifyPhoneNumber>
-  ) {
+  public verifyPhoneNumber(...args: Parameters<AuthApi['verifyPhoneNumber']>) {
     return this.authApi.verifyPhoneNumber(...args);
   }
 
