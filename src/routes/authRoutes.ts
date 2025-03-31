@@ -20,7 +20,7 @@ export async function authRoutes({ auth }: Options) {
     .post('/sendOTP', (config) => sendOTP(config), {
       body: sendOTPBody,
     })
-    .post('/verfiyOTP', (config) => verifyOTP(config), {
+    .post('/verifyOTP', (config) => verifyOTP(config), {
       body: verifyOTPBody,
     });
 }

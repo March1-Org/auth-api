@@ -1,62 +1,123 @@
-// import { treaty } from '@elysiajs/eden';
-// import { describe, it, expect, beforeAll } from 'bun:test';
-// import type { DbType } from 'db';
-// import { schema } from 'db/schema';
-// import type { UserRow } from 'db/schema/users';
-// import type { authApp } from 'index';
+import { treaty } from '@elysiajs/eden';
+import jwt from '@elysiajs/jwt';
+import { describe, it, expect, beforeAll } from 'bun:test';
+import { config } from 'config';
+import type { DbType } from 'db';
+import { schema } from 'db/schema';
+import type { authApp } from 'index';
 
-// import { setup } from '../utils/setup';
+import { setup } from '../utils/setup';
+import { setupFail } from '../utils/setupFail';
 
-// let db: DbType;
-// let api: ReturnType<typeof treaty<typeof authApp>>;
-// let authorization: string;
-// let user: UserRow;
+const jwtInstance = jwt({
+  secret: config.JWT_SECRET!,
+}).decorator.jwt;
 
-// beforeAll(async () => {
-//   const setupVals = await setup();
-//   db = setupVals.db;
-//   api = setupVals.api;
-//   authorization = setupVals.authorization;
+let db: DbType;
+let api: ReturnType<typeof treaty<typeof authApp>>;
+let authorization: string;
 
-//   await db.delete(schema.usersTable);
-//   await db
-//     .insert(schema.usersTable)
-//     .values({ age: 30, email: 'test@email.com', name: 'test' });
+beforeAll(async () => {
+  const setupVals = await setup();
+  db = setupVals.db;
+  api = setupVals.api;
+  authorization = setupVals.authorization;
 
-//   user = (await db.select().from(schema.usersTable))[0];
-// });
+  await db.delete(schema.users);
+  await db.delete(schema.sessions);
+  await db.delete(schema.verifications);
+});
 
-// describe('GET /users/:id', () => {
-//   it("returns 'User not found' error when user doesn't exist", async () => {
-//     const res = await api.users({ id: 999999 }).get({
-//       headers: {
-//         authorization,
-//       },
-//     });
+describe('GET /auth/verifyOTP', () => {
+  it('Should throw unauthorized', async () => {
+    const body = { token: '1' };
+    const res = await api.auth.verifyOTP.post(body, {
+      headers: {
+        authorization,
+      },
+    });
+    expect(res.error?.value).toEqual('Unauthorized');
+    expect(res.error?.status).toEqual(401);
+  });
 
-//     expect(res.error?.value).toBe('User not found.');
-//     expect(res.error?.status).toBe(404);
-//   });
+  it('Should throw missing phone number', async () => {
+    const body = {
+      token: await jwtInstance.sign({ code: '1' }),
+    };
+    const res = await api.auth.verifyOTP.post(body, {
+      headers: {
+        authorization,
+      },
+    });
 
-//   it('returns user row', async () => {
-//     const res = await api.users({ id: user.id }).get({
-//       headers: {
-//         authorization,
-//       },
-//     });
+    expect(res.error?.value).toEqual('Missing Phone Number');
+    expect(res.error?.status).toEqual(400);
+  });
 
-//     expect(res.data).toEqual(user);
-//     expect(res.status).toBe(200);
-//   });
+  it('Should throw missing phone number', async () => {
+    const body = {
+      token: await jwtInstance.sign({ code: '1' }),
+    };
+    const res = await api.auth.verifyOTP.post(body, {
+      headers: {
+        authorization,
+      },
+    });
 
-//   it('returns user row from cache', async () => {
-//     const res = await api.users({ id: user.id }).get({
-//       headers: {
-//         authorization,
-//       },
-//     });
+    expect(res.error?.value).toEqual('Missing Phone Number');
+    expect(res.error?.status).toEqual(400);
+  });
 
-//     expect(res.data).toEqual(user);
-//     expect(res.status).toBe(200);
-//   });
-// });
+  it('Should throw missing phone number', async () => {
+    const body = {
+      token: await jwtInstance.sign({ phoneNumber: '1' }),
+    };
+    const res = await api.auth.verifyOTP.post(body, {
+      headers: {
+        authorization,
+      },
+    });
+
+    expect(res.error?.value).toEqual('Missing Code');
+    expect(res.error?.status).toEqual(400);
+  });
+
+  it('Should catch a failed request', async () => {
+    const body = {
+      token: await jwtInstance.sign({ phoneNumber: '1', code: '1' }),
+    };
+    const { api } = await setupFail();
+    const res = await api.auth.verifyOTP.post(body, {
+      headers: {
+        authorization,
+      },
+    });
+
+    expect(res.error?.value).toEqual('Verification Failed');
+    expect(res.error?.status).toEqual(400);
+  });
+
+  it('Should verify OTP for a valid token', async () => {
+    const body = {
+      token: await jwtInstance.sign({ phoneNumber: '1', code: '1' }),
+    };
+    const res = await api.auth.verifyOTP.post(body, {
+      headers: {
+        authorization,
+      },
+    });
+
+    expect(res.data).toMatchObject({
+      status: true,
+      token: '1',
+      user: {
+        id: '1',
+        email: '@',
+        emailVerified: false,
+        name: 'test',
+        phoneNumber: '1',
+        phoneNumberVerified: true,
+      },
+    });
+  });
+});
