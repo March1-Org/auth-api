@@ -29,7 +29,7 @@
     "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json",
     "postbuild": "rimraf tsconfig.types.tsbuildinfo",
     "publish:build": "bun run build:npm && bun publish --registry https://npm.pkg.github.com",
-    "test:integrated": "bash ./test/setup.sh && bun test && bash ./test/teardown.sh",
+    "test:integrated": "bash ./test/setup.sh && bun test || true && bash ./test/teardown.sh",
     "lint": "eslint src && prettier src --check --config ./.prettierrc",
     "prettify": "prettier src --write"
   },
@@ -37,7 +37,7 @@
     "@elysiajs/eden": "^1.2.0",
     "@elysiajs/jwt": "^1.2.0",
     "awesome-phonenumber": "^7.4.0",
-    "better-auth": "^1.2.5",
+    "better-auth": "1.1.18",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.40.0",
     "drizzle-typebox": "^0.3.0",

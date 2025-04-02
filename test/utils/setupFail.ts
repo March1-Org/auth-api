@@ -6,12 +6,12 @@ import { getDb } from 'db';
 import { getCache } from 'db/cache';
 import { schemaBodies, schema } from 'db/schema';
 
-import { getMockAuth } from './mockAuth';
+import { getMockAuthFail } from './mockAuth';
 
-export async function setup() {
+export async function setupFail() {
   const db = await getDb();
   const cache = getCache();
-  const auth = getMockAuth();
+  const auth = getMockAuthFail();
   const app = createApp({
     auth,
     db,
