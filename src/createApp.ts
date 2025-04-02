@@ -25,5 +25,4 @@ export function createApp({ auth }: Options) {
     )
     .onBeforeHandle((options) => checkAuthorization(options))
     .use(authRoutes({ auth }));
-  // .use(userRoutes({ db, schemaBodies, schema, cache }));
 }

@@ -39,6 +39,9 @@ jobs:
       - name: Check Linting
         run: bun run lint
 
+      - name: Check Build
+        run: bun run build:npm
+
       - name: Setup tests containers
         run: bash ./test/setup.sh
 
