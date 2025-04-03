@@ -1,5 +1,4 @@
 import jwt from '@elysiajs/jwt';
-import { Auth } from 'auth';
 import { config } from 'config';
 import type { DbType } from 'db';
 import type { Schema, SchemaBodies } from 'db/schema';
@@ -7,6 +6,7 @@ import Elysia from 'elysia';
 import { checkAuthorization } from 'handlers/checkAuthorization';
 import type Redis from 'ioredis';
 import { authRoutes } from 'routes/authRoutes';
+import type { Auth } from 'utils/types/auth';
 
 type Options = {
   db: DbType;

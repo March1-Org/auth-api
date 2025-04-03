@@ -1,5 +1,5 @@
-import type { Auth } from 'auth';
 import { error, t } from 'elysia';
+import type { Auth } from 'utils/types/auth';
 import type { JwtType } from 'utils/types/jwt';
 
 export const sendOTPBody = t.Object({
@@ -29,7 +29,11 @@ export async function sendOTP({ auth, jwt, body: { token } }: Options) {
     return error('Bad Request', 'Invalid Phone Number');
   }
 
-  await auth.sendPhoneNumberOTP({ body: { phoneNumber } });
+  try {
+    await auth.sendPhoneNumberOTP({ body: { phoneNumber } });
+  } catch (err) {
+    return error('Bad Request', err);
+  }
 
   return 'Code sent';
 }
