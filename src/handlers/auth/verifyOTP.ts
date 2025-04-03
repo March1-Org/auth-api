@@ -1,5 +1,5 @@
-import type { Auth } from 'auth';
 import { error, t } from 'elysia';
+import type { Auth } from 'utils/types/auth';
 import type { JwtType } from 'utils/types/jwt';
 
 export const verifyOTPBody = t.Object({
@@ -28,16 +28,20 @@ export async function verifyOTP({ auth, jwt, body: { token } }: Options) {
     code: string;
   };
 
-  const verifiedRes = await auth.verifyPhoneNumber({
-    body: {
-      phoneNumber,
-      code,
-    },
-  });
+  try {
+    const verifiedRes = await auth.verifyPhoneNumber({
+      body: {
+        phoneNumber,
+        code,
+      },
+    });
 
-  if (!verifiedRes || !verifiedRes.status || !verifiedRes.token) {
-    return error('Bad Request', 'Verification Failed');
+    if (!verifiedRes || !verifiedRes.status || !verifiedRes.token) {
+      return error('Bad Request', 'Verification Failed');
+    }
+
+    return verifiedRes;
+  } catch (err) {
+    return error('Bad Request', err);
   }
-
-  return verifiedRes;
 }
