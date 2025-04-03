@@ -21,6 +21,19 @@ beforeAll(async () => {
   db = setupVals.db;
   api = setupVals.api;
   authorization = setupVals.authorization;
+
+  await db.delete(schema.users);
+  await db.delete(schema.sessions);
+  await db.delete(schema.verifications);
+
+  const body = {
+    token: await jwtInstance.sign({ phoneNumber: '+12345678910' }),
+  };
+  await api.auth.sendOTP.post(body, {
+    headers: {
+      authorization,
+    },
+  });
 });
 
 describe('GET /auth/verifyOTP', () => {
