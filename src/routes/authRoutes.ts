@@ -1,9 +1,9 @@
 import jwt from '@elysiajs/jwt';
-import { Auth } from 'auth';
 import { config } from 'config';
 import Elysia from 'elysia';
 import { sendOTP, sendOTPBody } from 'handlers/auth/sendOTP';
 import { verifyOTP, verifyOTPBody } from 'handlers/auth/verifyOTP';
+import type { Auth } from 'utils/types/auth';
 
 type Options = {
   auth: Auth;
