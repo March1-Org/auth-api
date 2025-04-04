@@ -9,10 +9,16 @@ export const verifyOTPBody = t.Object({
 type Options = {
   auth: Auth;
   jwt: JwtType;
+  tokenizeJwt: JwtType;
   body: typeof verifyOTPBody.static;
 };
 
-export async function verifyOTP({ auth, jwt, body: { token } }: Options) {
+export async function verifyOTP({
+  auth,
+  jwt,
+  tokenizeJwt,
+  body: { token },
+}: Options) {
   const verifiedToken = await jwt.verify(token);
   if (!verifiedToken) {
     return error('Unauthorized');
@@ -40,7 +46,17 @@ export async function verifyOTP({ auth, jwt, body: { token } }: Options) {
       return error('Bad Request', 'Verification Failed');
     }
 
-    return verifiedRes;
+    const userPayload = {
+      id: verifiedRes.user.id,
+      email: verifiedRes.user.email,
+      name: verifiedRes.user.name,
+      phoneNumber: verifiedRes.user.phoneNumber,
+      phoneNumberVerified: verifiedRes.user.phoneNumberVerified.toString(),
+      emailVerified: verifiedRes.user.emailVerified.toString(),
+      createdAt: verifiedRes.user.createdAt.toISOString(),
+      updatedAt: verifiedRes.user.updatedAt.toISOString(),
+    };
+    return tokenizeJwt.sign(userPayload);
   } catch (err) {
     return error('Bad Request', err);
   }
