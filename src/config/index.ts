@@ -24,6 +24,7 @@ interface Config {
   TWILIO_ACCOUNT_SID: string;
   TWILIO_SERVICE_SID: string;
   TWILIO_AUTH_TOKEN: string;
+  JWT_TOKENIZE_SECRET: string;
 }
 
 // Export the configuration
@@ -44,4 +45,5 @@ export const config: Config = {
   TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID!,
   TWILIO_SERVICE_SID: process.env.TWILIO_SERVICE_SID!,
   TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN!,
+  JWT_TOKENIZE_SECRET: process.env.JWT_TOKENIZE_SECRET || 'jwt-tokenize-secret',
 };

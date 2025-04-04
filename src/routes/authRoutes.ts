@@ -17,6 +17,12 @@ export async function authRoutes({ auth }: Options) {
         secret: config.JWT_SECRET!,
       })
     )
+    .use(
+      jwt({
+        name: 'tokenizeJwt',
+        secret: config.JWT_TOKENIZE_SECRET,
+      })
+    )
     .post('/sendOTP', (config) => sendOTP(config), {
       body: sendOTPBody,
     })

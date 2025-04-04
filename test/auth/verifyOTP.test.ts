@@ -127,8 +127,6 @@ describe('GET /auth/verifyOTP', () => {
     });
 
     expect(res.status).toEqual(200);
-    expect(res.data?.status).toEqual(true);
-    expect(res.data?.token).toBeString();
-    expect(res.data?.user).toBeObject();
+    expect(res.data).toBeString();
   });
 });
