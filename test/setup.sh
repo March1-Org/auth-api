@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# === Install Bun if missing ===
+if ! command -v bun &> /dev/null; then
+  echo "Installing Bun..."
+  curl -fsSL https://bun.sh/install | bash
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$BUN_INSTALL/bin:$PATH"
+fi
+
+# Verify Bun
+if ! command -v bun &> /dev/null; then
+  echo "Error: Bun is not available. Exiting."
+  exit 1
+fi
+
+bun install
+
 # Load environment variables
 if [ -f .env.testing ]; then
   source .env.testing
@@ -9,7 +25,7 @@ else
 fi
 
 # Create Docker volume for PostgreSQL data
-docker volume create postgres_data
+docker volume create test_data
 
 # Start the PostgreSQL container
 DB_CONTAINER_ID=$(docker run -d \
@@ -17,7 +33,7 @@ DB_CONTAINER_ID=$(docker run -d \
   -e POSTGRES_PASSWORD="$POSTGRES_PASSWORD" \
   -e POSTGRES_DB="$POSTGRES_DB" \
   -p 5432:5432 \
-  -v postgres_data:/var/lib/postgresql/data \
+  -v test_data:/var/lib/postgresql/data \
   postgres:latest)
 
 if [ -z "$DB_CONTAINER_ID" ]; then
@@ -52,18 +68,4 @@ done
 
 # Migrate SQL files from ./drizzle folder
 echo "Migrating SQL files from ./drizzle folder..."
-for sql_file in ./drizzle/*.sql; do
-  if [ -f "$sql_file" ]; then
-    echo "Executing $sql_file..."
-    docker exec -i $DB_CONTAINER_ID psql -U $POSTGRES_USER -d $POSTGRES_DB -f - < "$sql_file"
-    if [ $? -eq 0 ]; then
-      echo "$sql_file migrated successfully."
-    else
-      echo "Failed to migrate $sql_file."
-      exit 1
-    fi
-  else
-    echo "No SQL files found in ./drizzle folder."
-    exit 1
-  fi
-done
+bun drizzle-kit push

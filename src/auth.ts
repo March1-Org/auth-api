@@ -1,8 +1,8 @@
+import { authSchema } from '@march1-org/auth-db';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { phoneNumber } from 'better-auth/plugins';
-import { getDb } from 'db';
-import { schema } from 'db/schema';
+import type { getDb } from 'lib/db';
 import { getTempEmail, getTempName } from 'utils/auth/temp';
 import { validatePhoneNumber } from 'utils/auth/validate';
 
@@ -21,7 +21,7 @@ export function getAuth({ sendOTP, db }: Options) {
   return betterAuth({
     database: drizzleAdapter(db, {
       provider: 'pg',
-      schema,
+      schema: authSchema,
       usePlural: true,
     }),
     plugins: [
