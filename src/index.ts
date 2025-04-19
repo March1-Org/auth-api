@@ -1,8 +1,8 @@
+import { authSchema, authSchemaBodies } from '@march1-org/auth-db';
 import { getAuth } from 'auth';
 import { createApp } from 'createApp';
-import { getDb } from 'db';
-import { getCache } from 'db/cache';
-import { schema, schemaBodies } from 'db/schema';
+import { getCache } from 'lib/cache';
+import { getDb } from 'lib/db';
 import { twilioSendOTP } from 'utils/auth/twilio';
 import { validatePhoneNumber } from 'utils/auth/validate';
 import { Auth } from 'utils/types/auth';
@@ -12,9 +12,13 @@ const cache = getCache();
 const authInstance = getAuth({ sendOTP: twilioSendOTP, db });
 const auth = new Auth(authInstance.api, validatePhoneNumber);
 
-const authApp = createApp({ cache, db, schema, schemaBodies, auth }).listen(
-  3000
-);
+const authApp = createApp({
+  cache,
+  db,
+  authSchema,
+  authSchemaBodies,
+  auth,
+}).listen(3000);
 
 console.log(
   `🦊 Elysia is running at ${authApp.server?.hostname}:${authApp.server?.port}`

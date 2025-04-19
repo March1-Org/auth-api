@@ -1,11 +1,11 @@
 import { treaty } from '@elysiajs/eden';
 import jwt from '@elysiajs/jwt';
+import { authSchemaBodies, authSchema } from '@march1-org/auth-db';
 import { getAuth } from 'auth';
 import { config } from 'config';
 import { createApp } from 'createApp';
-import { getDb } from 'db';
-import { getCache } from 'db/cache';
-import { schemaBodies, schema } from 'db/schema';
+import { getCache } from 'lib/cache';
+import { getDb } from 'lib/db';
 import { validatePhoneNumber } from 'utils/auth/validate';
 import { Auth } from 'utils/types/auth';
 
@@ -19,8 +19,8 @@ export async function setup() {
   const app = createApp({
     auth,
     db,
-    schemaBodies,
-    schema,
+    authSchemaBodies,
+    authSchema,
     cache,
   });
 

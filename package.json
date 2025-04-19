@@ -25,7 +25,7 @@
     "dev": "docker compose up -d db cache && bun run db:migrate && bun run --watch src/index.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "build:npm": "bun build --target=node ./src/index.ts --outfile=dist/index.js && bun build --target=node ./src/db/schema/index.ts --outfile=dist/db/schema/index.js && bun run build:declaration",
+    "build:npm": "bun build --target=node ./src/index.ts --outfile=dist/index.js && bun run build:declaration",
     "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json",
     "postbuild": "rimraf tsconfig.types.tsbuildinfo",
     "publish:build": "bun run build:npm && bun publish --registry https://npm.pkg.github.com",
@@ -36,6 +36,7 @@
   "dependencies": {
     "@elysiajs/eden": "^1.2.0",
     "@elysiajs/jwt": "^1.2.0",
+    "@march1-org/auth-db": "^1.0.1",
     "awesome-phonenumber": "^7.4.0",
     "better-auth": "1.1.18",
     "dotenv": "^16.4.7",

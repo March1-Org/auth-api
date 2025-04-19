@@ -1,10 +1,10 @@
 import { treaty } from '@elysiajs/eden';
 import jwt from '@elysiajs/jwt';
+import { authSchema } from '@march1-org/auth-db';
 import { describe, it, expect, beforeAll } from 'bun:test';
 import { config } from 'config';
-import type { DbType } from 'db';
-import { schema } from 'db/schema';
 import type { authApp } from 'index';
+import type { DbType } from 'lib/db';
 
 import { setup } from '../utils/setup';
 
@@ -22,9 +22,9 @@ beforeAll(async () => {
   api = setupVals.api;
   authorization = setupVals.authorization;
 
-  await db.delete(schema.users);
-  await db.delete(schema.sessions);
-  await db.delete(schema.verifications);
+  await db.delete(authSchema.users);
+  await db.delete(authSchema.sessions);
+  await db.delete(authSchema.verifications);
 });
 
 describe('GET /auth/sendOTP', () => {
