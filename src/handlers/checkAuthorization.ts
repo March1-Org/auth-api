@@ -1,13 +1,14 @@
-import { config } from 'config';
+import type { Config } from 'config';
 import { error } from 'elysia';
 import type { JwtType } from 'utils/types/jwt';
 
 type Options = {
   request: Request;
   jwt: JwtType;
+  config: Config;
 };
 
-export async function checkAuthorization({ request, jwt }: Options) {
+export async function checkAuthorization({ request, jwt, config }: Options) {
   const authorization = request.headers.get('authorization');
   if (!authorization) {
     return error('Unauthorized');

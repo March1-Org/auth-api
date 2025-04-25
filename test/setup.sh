@@ -41,20 +41,9 @@ if [ -z "$DB_CONTAINER_ID" ]; then
   exit 1
 fi
 
-# Start the Redis container
-CACHE_CONTAINER_ID=$(docker run -d \
-  -e REDIS_PASSWORD="$REDIS_PASSWORD" \
-  -p 6379:6379 \
-  bitnami/redis:latest)
-
-if [ -z "$CACHE_CONTAINER_ID" ]; then
-  echo "Failed to start the cache container."
-  exit 1
-fi
 
 # Write container IDs to a file
 echo "DB_CONTAINER_ID=$DB_CONTAINER_ID" > container_ids.env
-echo "CACHE_CONTAINER_ID=$CACHE_CONTAINER_ID" >> container_ids.env
 
 # Wait for the database to start
 echo "Waiting for the database to start..."

@@ -12,8 +12,6 @@ fi
 echo "Stopping and removing containers..."
 docker stop $DB_CONTAINER_ID
 docker rm $DB_CONTAINER_ID
-docker stop $CACHE_CONTAINER_ID
-docker rm $CACHE_CONTAINER_ID
 
 # Remove volume
 echo "Removing docker volume..."

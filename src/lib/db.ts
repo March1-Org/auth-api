@@ -1,8 +1,8 @@
-import { config } from 'config';
+import type { Config } from 'config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 
-export async function getDb() {
+export async function getDb(config: Config) {
   const client = new Client({
     host: config.POSTGRES_HOST,
     port: config.POSTGRES_PORT,

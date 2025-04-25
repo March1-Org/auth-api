@@ -21,11 +21,6 @@ jobs:
           echo "POSTGRES_PASSWORD=db_password" >> .env.testing
           echo "POSTGRES_DB=db" >> .env.testing
           echo "POSTGRES_PORT=5432" >> .env.testing
-          echo "REDIS_URL=127.0.0.1" >> .env.testing
-          echo "REDIS_PORT=6379" >> .env.testing
-          echo "REDIS_HOST=127.0.0.1" >> .env.testing
-          echo "REDIS_PASSWORD=cache_password" >> .env.testing
-          echo "REDIS_DATABASE=0" >> .env.testing
           echo "JWT_SECRET=jwt-secret" >> .env.testing
 
       - name: Make setup.sh and teardown.sh executable

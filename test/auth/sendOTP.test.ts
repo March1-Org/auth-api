@@ -3,7 +3,7 @@ import jwt from '@elysiajs/jwt';
 import { authSchema } from '@march1-org/auth-db';
 import { describe, it, expect, beforeAll } from 'bun:test';
 import { config } from 'config';
-import type { authApp } from 'index';
+import type { createAuthApp } from 'index';
 import type { DbType } from 'lib/db';
 
 import { setup } from '../utils/setup';
@@ -13,7 +13,7 @@ const jwtInstance = jwt({
 }).decorator.jwt;
 
 let db: DbType;
-let api: ReturnType<typeof treaty<typeof authApp>>;
+let api: ReturnType<typeof treaty<ReturnType<typeof createAuthApp>>>;
 let authorization: string;
 
 beforeAll(async () => {
