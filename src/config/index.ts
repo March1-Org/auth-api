@@ -2,12 +2,10 @@ import path from 'path';
 
 import dotenv from 'dotenv';
 
-// Load the correct .env file based on NODE_ENV
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
-// Define the configuration interface
-interface Config {
+export interface Config {
   NODE_ENV: string;
   PORT: number;
   JWT_SECRET: string;
@@ -17,17 +15,12 @@ interface Config {
   POSTGRES_DB: string;
   POSTGRES_PORT: number;
   POSTGRES_HOST: string;
-  REDIS_PORT: number;
-  REDIS_HOST: string;
-  REDIS_PASSWORD: string;
-  REDIS_DB: number;
   TWILIO_ACCOUNT_SID: string;
   TWILIO_SERVICE_SID: string;
   TWILIO_AUTH_TOKEN: string;
   JWT_TOKENIZE_SECRET: string;
 }
 
-// Export the configuration
 export const config: Config = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: parseInt(process.env.PORT || '3000'),
@@ -38,10 +31,6 @@ export const config: Config = {
   POSTGRES_DB: process.env.POSTGRES_DB || 'db',
   POSTGRES_PORT: parseInt(process.env.POSTGRES_PORT || '5432'),
   POSTGRES_HOST: process.env.POSTGRES_HOST || '127.0.0.1',
-  REDIS_PORT: parseInt(process.env.REDIS_PORT || '6379'),
-  REDIS_HOST: process.env.REDIS_HOST || '127.0.0.1',
-  REDIS_PASSWORD: process.env.REDIS_PASSWORD || 'cache_password',
-  REDIS_DB: parseInt(process.env.REDIS_DB || '0'),
   TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID!,
   TWILIO_SERVICE_SID: process.env.TWILIO_SERVICE_SID!,
   TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN!,
