@@ -25,4 +25,4 @@ createAuthApp({
 type AuthApp = ReturnType<typeof createAuthApp>;
 
 export type { AuthApp };
-export { createAuthApp, getAuth, Auth };
+export { createAuthApp, getAuth, Auth, validatePhoneNumber };
