@@ -22,6 +22,7 @@ jobs:
           echo "POSTGRES_DB=db" >> .env.testing
           echo "POSTGRES_PORT=5432" >> .env.testing
           echo "JWT_AUTH_SECRET=jwt-auth-secret" >> .env.testing
+          echo "AUTH_API_PASSWORD=auth_api_password" >> .env.testing
 
       - name: Make setup.sh and teardown.sh executable
         run: chmod +x ./test/setup.sh && chmod +x ./test/teardown.sh

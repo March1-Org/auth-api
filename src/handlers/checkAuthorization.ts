@@ -24,7 +24,7 @@ export async function checkAuthorization({ request, jwt, config }: Options) {
     return error('Unauthorized');
   }
 
-  if (apiPassword !== config.API_PASSWORD) {
+  if (apiPassword !== config.AUTH_API_PASSWORD) {
     return error('Unauthorized');
   }
 }

@@ -22,7 +22,7 @@ export async function setup() {
 
   const authorization = await jwt({
     secret: config.JWT_AUTH_SECRET,
-  }).decorator.jwt.sign({ apiPassword: config.API_PASSWORD });
+  }).decorator.jwt.sign({ apiPassword: config.AUTH_API_PASSWORD });
 
   return { db, api, authorization };
 }
