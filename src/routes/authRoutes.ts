@@ -15,7 +15,7 @@ export async function authRoutes({ auth, config }: Options) {
     .decorate('auth', auth)
     .use(
       jwt({
-        secret: config.JWT_SECRET!,
+        secret: config.JWT_AUTH_SECRET!,
       })
     )
     .use(

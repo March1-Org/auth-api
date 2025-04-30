@@ -2,11 +2,11 @@ import { treaty } from '@elysiajs/eden';
 import jwt from '@elysiajs/jwt';
 import { describe, it, expect, beforeAll } from 'bun:test';
 import { config } from 'config';
-import type { authApp } from 'index';
+import type { createAuthApp } from 'index';
 
 import { setup } from './utils/setup';
 
-let api: ReturnType<typeof treaty<typeof authApp>>;
+let api: ReturnType<typeof treaty<ReturnType<typeof createAuthApp>>>;
 
 beforeAll(async () => {
   const setupVals = await setup();
@@ -38,7 +38,7 @@ describe('Authorization Checks', () => {
 
   it("returns 'Unauthorized' when provided no api password", async () => {
     const authorization = await jwt({
-      secret: config.JWT_SECRET,
+      secret: config.JWT_AUTH_SECRET,
     }).decorator.jwt.sign({});
 
     const res = await api.auth.sendOTP.post(
@@ -57,7 +57,7 @@ describe('Authorization Checks', () => {
 
   it("returns 'Unauthorized' when provided the wrong api password", async () => {
     const authorization = await jwt({
-      secret: config.JWT_SECRET,
+      secret: config.JWT_AUTH_SECRET,
     }).decorator.jwt.sign({ apiPassword: '123' });
 
     const res = await api.auth.sendOTP.post(

@@ -9,7 +9,7 @@ import type { DbType } from 'lib/db';
 import { setup } from '../utils/setup';
 
 const jwtInstance = jwt({
-  secret: config.JWT_SECRET!,
+  secret: config.JWT_AUTH_SECRET!,
 }).decorator.jwt;
 
 let db: DbType;
