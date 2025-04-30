@@ -3,7 +3,7 @@
   "publishConfig": {
     "@march1-org:registry": "https://npm.pkg.github.com"
   },
-  "version": "1.0.5",
+  "version": "1.0.6",
   "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "type": "module",
