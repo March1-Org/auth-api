@@ -21,7 +21,7 @@ export async function setup() {
   const api = treaty(app);
 
   const authorization = await jwt({
-    secret: config.JWT_SECRET,
+    secret: config.JWT_AUTH_SECRET,
   }).decorator.jwt.sign({ apiPassword: config.API_PASSWORD });
 
   return { db, api, authorization };

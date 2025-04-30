@@ -8,7 +8,7 @@ dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 export interface Config {
   NODE_ENV: string;
   PORT: number;
-  JWT_SECRET: string;
+  JWT_AUTH_SECRET: string;
   API_PASSWORD: string;
   POSTGRES_USER: string;
   POSTGRES_PASSWORD: string;
@@ -24,7 +24,7 @@ export interface Config {
 export const config: Config = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: parseInt(process.env.PORT || '3000'),
-  JWT_SECRET: process.env.JWT_SECRET || 'jwt-secret',
+  JWT_AUTH_SECRET: process.env.JWT_AUTH_SECRET || 'jwt-auth-secret',
   API_PASSWORD: process.env.API_PASSWORD || 'api-password',
   POSTGRES_USER: process.env.POSTGRES_USER || 'db_user',
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || 'db_password',

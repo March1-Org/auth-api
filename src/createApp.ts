@@ -14,7 +14,7 @@ export function createAuthApp({ auth, config }: Options) {
   return new Elysia()
     .use(
       jwt({
-        secret: config.JWT_SECRET!,
+        secret: config.JWT_AUTH_SECRET!,
       })
     )
     .decorate('config', config)
